@@ -1,19 +1,31 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
+import { getCustomRepository } from "typeorm";
+import { EpisodesRepository } from "../repositories/EpisodesRepository";
 import EpisodesService from "../service/EpisodesService";
 
 class EpisodesController {
   async create(req: Request, res: Response) {
     const { title, episode, thumbnail } = req.body;
 
-    const episodesService = new EpisodesService();
+    const episodesRepository = getCustomRepository(EpisodesRepository);
 
-    try {
-      const hqepisodes = episodesService.create({ title, episode, thumbnail });
+    const hqepisodes = episodesRepository.create({
+      title,
+      episode,
+      thumbnail,
+    });
 
-      return res.json(hqepisodes);
-    } catch (error) {
-      return response.status(400).json({ message: error.message });
-    }
+    await episodesRepository.save(hqepisodes);
+
+    return res.status(201).json(hqepisodes);
+  }
+
+  async show(req: Request, res: Response) {
+    const episodesRepository = getCustomRepository(EpisodesRepository);
+
+    const allEpisodes = await episodesRepository.find();
+
+    return res.json(allEpisodes);
   }
 }
 

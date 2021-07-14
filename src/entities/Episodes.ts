@@ -22,4 +22,4 @@ class Episodes {
   }
 }
 
-export { Episodes };
+export default Episodes;

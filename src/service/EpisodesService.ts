@@ -1,5 +1,6 @@
 import { Repository } from "typeorm";
-import { Episodes } from "../entities/Episodes";
+import Episodes from "../entities/Episodes";
+
 import { IEpisodes } from "./types";
 
 class EpisodesService {
